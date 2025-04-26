@@ -14,9 +14,8 @@ client = TelegramClient("save_id_session", API_ID, API_HASH)
 
 @client.on(events.NewMessage)
 async def handler(event):
-    sender = await event.get_sender()
-    if sender.is_self:
-        return  # Игнорируем свои же сообщения
+    if event.out:
+        return  # Пропускаем свои сообщения (бота)
 
     text = event.raw_text.strip()
     
@@ -26,6 +25,7 @@ async def handler(event):
             await event.respond("✅ ID сохранён в канал.")
         except Exception as e:
             await event.respond(f"❌ Ошибка при отправке в канал: {e}")
+
 
 
 async def main():
